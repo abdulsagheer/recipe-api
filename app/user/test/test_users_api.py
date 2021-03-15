@@ -94,18 +94,19 @@ class PrivateUserApiTests(TestCase):
     """Test API requests that require authentication"""
 
     def setUp(self):
-        self.user=create_user('test@123.com',
-        password='test123',
-        name='Name'
+        self.user = create_user(
+            email='test@londonappdev.com',
+            password='testpass',
+            name='name'
         )
-        self.client=APIClient()
+        self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
     def test_retrieve_profile_success(self):
         """Test retrieve profile for logged in used"""
         res=self.client.get(ME_URL)
 
-        self.assertEqual(res.status_code,status.HTTP_200_ok)
+        self.assertEqual(res.status_code,status.HTTP_200_OK)
         self.assertEqual(res.data,{
             'name':self.user.name,
             'email':self.user.email
@@ -125,4 +126,3 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(self.user.name,payload['name'])
         self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(res.status_code,status.HTTP_200_OK)
-        
